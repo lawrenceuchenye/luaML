@@ -1,16 +1,6 @@
 -- main class Object(Table)
 numLUA={}
 
---util function
-function rand(a,xi,c,mod,num)
-  arr={}
-  for n=1,num,1 do
-  xi=(xi*a+c)%mod
-  arr[n]=xi/mod
-  end
-  return arr
-end
-
 -- createVector function class
 function numLUA:createVector(vector)
   this={
@@ -28,7 +18,6 @@ function numLUA:createVector(vector)
 
 -- function to get the dot product of vectors
   function this:dot(vector)
-    vector:print()
     dot_product=0
     for scal_indx=1,#self.vec,1 do
        dot_product=dot_product+(self.vec[scal_indx]*vector.vec[scal_indx])
@@ -126,24 +115,12 @@ end
 
 -- function to generate random vectors
 function numLUA:randVec(n)
-   str=tostring(os.time()-math.random()*10)
-   seed=tonumber(string.sub(str,8,10))*10
-   local vector=rand(2151,seed,1254,40,n)
+   local vector={}
+   math.randomseed(os.time())
+   for scal_indx=1,n,1 do
+      vector[scal_indx]=math.random()
+   end
    return self:createVector(vector)
-end
-
--- function to get random number
-function numLUA:randNumber(x)
-  str=tostring(os.time()-math.random()*10)
-  seed=tonumber(string.sub(str,8,10))*10
-  rand_arr=rand(2151,seed,1254,40,1000)
-  new_arr={}
-  n_indx=1
-  for indx=1,#rand_arr,1 do
-    if math.floor(rand_arr[indx]*10) <= x and math.floor(rand_arr[indx]*10) >= 1 then
-      return math.floor(rand_arr[indx]*10)
-    end
-  end
 end
 
 -- function to get exponent

@@ -5,14 +5,15 @@ numlua=require "lib/numLUA"
 data_x=numlua:createMatrix({
    {1,0,1},
    {0,0,1},
-   {1,0,1}
+   {1,0,1},
+   {0,1,0}
   })
-data_y=numlua:createVector({1,0,1})
+data_y=numlua:createVector({1,0,1,0})
 
 -- perceptron
 brain=numlua:randVec(3)
-lr=0.01
-n=1000
+lr=0.001
+n=10000
 
 
 print("\n=========== UNOPTIMZED BRAIN ==========")
@@ -38,7 +39,16 @@ brain:print()
 
 ---- testing trained perceptron
 print()
-for x_data_indx=1,#data_y.vec,1 do
-    output=numlua:dot(numlua:createVector(data_x.mat[x_data_indx]),brain)
-    print("OUTPUT:"..output.." EXPECTED:"..data_y.vec[x_data_indx])
+test_data_x=numlua:createMatrix({
+   {0,1,0},
+   {0,1,1},
+   {1,1,0},
+   {1,0,0}
+  })
+
+test_data_y=numlua:createVector({0,1,1,0})
+
+for x_data_indx=1,#test_data_y.vec,1 do
+    output=numlua:dot(numlua:createVector(test_data_x.mat[x_data_indx]),brain)
+    print("OUTPUT:"..output.." EXPECTED:"..test_data_y.vec[x_data_indx])
 end
