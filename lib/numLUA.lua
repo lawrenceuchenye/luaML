@@ -65,7 +65,7 @@ function numLUA:createVector(vector)
 
 -- function to multiply vectors
   function this:mul(vector)
-    if #self.vec ~= vector.vec then
+    if #self.vec ~= #vector.vec then
       print("Error:vectors must be of the same dimensions")
       return nil
     end
@@ -120,6 +120,51 @@ function numLUA:createVector(vector)
            return numLUA:createVector(cross_vector)
        end
   end
+
+  -- set metatables on vector
+  setmetatable(this, {
+    __add = function (vec1, vec2)
+      return vec1:add(vec2)
+    end,
+    __sub = function (vec1, vec2)
+      return vec1:sub(vec2)
+    end,
+    __mul = function (vec1, vec2)
+      return vec1:cross(vec2)
+    end,
+    __div = function (vec, scalar)
+      return vec:div(scalar)
+    end,
+    -- __len = function (vec)
+    --   return vec:getLength()
+    -- end,
+    -- __index = function (vec, key)
+    --   if (type(key) == "number") then
+    --     return vec.vec[key]
+    --   else
+    --     return error("Invalid index!")
+    --   end
+    -- end,
+    -- __newindex = function (vector, key, value)
+    --   if (type(key) == "number") then
+    --     vector.vec[key] = value
+    --   else
+    --     return error("Invalid value for index!")
+    --   end
+    -- end,
+    __tostring = function (vector)
+      vector_string="{"
+      for scal_indx=1,#vector.vec,1 do
+         vector_string=vector_string..vector.vec[scal_indx]
+         if scal_indx < #vector.vec then
+           vector_string=vector_string..","
+          end
+      end
+      vector_string=vector_string.."}"
+      return  vector_string
+    end
+  })
+
  -- return vector obj(table)
   return this
 end
@@ -216,7 +261,7 @@ function numLUA:createMatrix(matrix)
            end
        mat_str=mat_str..vector_string
       end
-     
+
       mat_str=mat_str.."}"
       print(mat_str)
     end
@@ -232,7 +277,7 @@ function numLUA:createMatrix(matrix)
          scal_mat[rw_indx]=scal_mat_v
       end
       return numLUA:createMatrix(scal_mat)
-    end 
+    end
 
 
     -- function to add a matrix by a scalar
@@ -289,7 +334,7 @@ function numLUA:createMatrix(matrix)
             mat_vec[cl_indx]=self.mat[rw_indx][cl_indx]*vector.vec[cl_indx]
           end
           vec_mul_mat[rw_indx]=mat_vec
-       end  
+       end
        return numLUA:createMatrix(vec_mul_mat)
     end
 
@@ -348,6 +393,6 @@ function numLUA:createMatrix(matrix)
 
     -- return matrix obj(table)
     return this
-end 
+end
 -- return class/table
 return numLUA
