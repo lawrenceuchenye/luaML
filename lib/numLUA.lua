@@ -1,5 +1,6 @@
 -- main class Object(Table)
-numLUA={}
+Error=require "lib/Error"
+numLUA={ Error = Error }
 
 --util function
 function rand(a,xi,c,mod,num)
@@ -28,7 +29,6 @@ function numLUA:createVector(vector)
 
 -- function to get the dot product of vectors
   function this:dot(vector)
-    vector:print()
     dot_product=0
     for scal_indx=1,#self.vec,1 do
        dot_product=dot_product+(self.vec[scal_indx]*vector.vec[scal_indx])
@@ -66,8 +66,9 @@ function numLUA:createVector(vector)
 -- function to multiply vectors
   function this:mul(vector)
     if #self.vec ~= #vector.vec then
-      print("Error:vectors must be of the same dimensions")
-      return nil
+      -- print("Error:vectors must be of the same dimensions")
+      -- return nil
+       Error:MatchingDimensions(self, vector)
     end
     dot_vector={}
     for scal_indx=1,#self.vec,1 do
@@ -101,12 +102,12 @@ function numLUA:createVector(vector)
  -- function for cross product of vectors
   function this:cross(vector)
      if #self.vec ~= #vector.vec then
-        print("Error:vectors must be of the same dimensions")
-        return nil
+        -- print("Error:vectors must be of the same dimensions")
+        -- return nil
+       Error:MatchingDimensions(vector1, vector2)
      end
      if #self.vec > 3 or #vector.vec > 3 then
-        print("Error:unable to get cross product for vectors greater than 3 dimensions")
-        return nil
+        Error:CrossProduct()
       end
 
       if #vector.vec < 3 then
@@ -199,8 +200,9 @@ end
 -- function to get the dot product of vectors
 function numLUA:dot(vector1,vector2)
   if #vector1.vec ~= #vector2.vec then
-    print("Error:vectors must be of the same dimensions")
-    return nil
+    -- print("Error:vectors must be of the same dimensions")
+    -- return nil
+       Error:MatchingDimensions(vector1, vector2)
   end
 
   dot_product=0
@@ -213,12 +215,12 @@ end
 -- function for cross product of vectors
 function numLUA:cross(vector1,vector2)
     if #vector1.vec ~= #vector2.vec then
-       print("Error:vectors must be of the same dimensions")
-       return nil
+       -- print("Error:vectors must be of the same dimensions")
+       -- return nil
+       Error:MatchingDimensions(vector1, vector2)
     end
     if #vector1.vec > 3 or #vector2.vec > 3 then
-       print("Error:unable to get cross product for vectors greater than 3 dimensions")
-       return nil
+       Error:CrossProduct()
     end
 
     if #vector2.vec < 3 then
@@ -324,8 +326,9 @@ function numLUA:createMatrix(matrix)
     -- function to multiply a matrix by a vector
     function this:vecMul(vector)
        if  #self.mat[1] ~= #vector.vec then
-         print("Error:vector and matrix columns must be of the same dimensions")
-         return nil
+         -- print("Error:vector and matrix columns must be of the same dimensions")
+         -- return nil
+         Error:MatchingColumns(self, vector)
        end
        vec_mul_mat={}
        for rw_indx=1,#self.mat,1 do
@@ -341,8 +344,9 @@ function numLUA:createMatrix(matrix)
     -- function to add a matrix by a vector
     function this:vecAdd(vector)
        if  #self.mat[1] ~= #vector.vec then
-         print("Error:vector and matrix columns must be of the same dimensions")
-         return nil
+         -- print("Error:vector and matrix columns must be of the same dimensions")
+         -- return nil
+         Error:MatchingColumns(self, vector)
        end
        vec_mul_mat={}
        for rw_indx=1,#self.mat,1 do
@@ -358,8 +362,9 @@ function numLUA:createMatrix(matrix)
     -- function to divide a matrix by a vector
     function this:vecDiv(vector)
        if  #self.mat[1] ~= #vector.vec then
-         print("Error:vector and matrix columns must be of the same dimensions")
-         return nil
+         -- print("Error:vector and matrix columns must be of the same dimensions")
+         -- return nil
+         Error:MatchingColumns(self, vector)
        end
        vec_mul_mat={}
        for rw_indx=1,#self.mat,1 do
@@ -375,8 +380,9 @@ function numLUA:createMatrix(matrix)
     -- function to subtract a matrix by a vector
     function this:vecSub(vector)
        if  #self.mat[1] ~= #vector.vec then
-         print("Error:vector and matrix columns must be of the same dimensions")
-         return nil
+         -- print("Error:vector and matrix columns must be of the same dimensions")
+         -- return nil
+         Error:MatchingColumns(self, vector)
        end
 
        vec_mul_mat={}
